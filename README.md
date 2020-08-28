@@ -1,0 +1,2 @@
+# beggar
+money collection utility
