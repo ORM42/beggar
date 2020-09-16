@@ -34,12 +34,17 @@
         </div>
 
         <div class="col-auto">
-          <input
+          <div class="input-group mb-2">
+            <input
               type="text"
-              class="form-control mb-2"
+              class="form-control"
               placeholder="Desired amount"
               v-model.number="amount"
-          >
+            >
+            <div class="input-group-postpone">
+              <div class="input-group-text">$</div>
+            </div>
+          </div>
         </div>
 
         <div class="col-auto">
@@ -65,8 +70,10 @@
     <hr>
 
     <ul v-if="getBegs">
-      <Beg
+      <beg
+          class="mb-2"
           v-for="beg in begs"
+          :key=beg.id
           :begData=beg
           @remove="removeBeg"
       />
@@ -95,18 +102,26 @@ export default {
       begs: []
     }
   },
-  methods: {
-    addBeg () {
-      this.begs.push({
-        id: begId++,
+  computed: {
+    getNewBeg: function () {
+      return {
         name: this.name,
         purpose: this.purpose,
         amount: this.amount,
-      });
-      localStorage.setItem('begs', JSON.stringify(this.begs));
+      }
+    }
+  },
+  methods: {
+    addBeg () {
+      const newBeg = this.getNewBeg;
+      if (!newBeg.id) {
+        newBeg.id = begId++;
+        this.begs.push(this.getNewBeg);
+        localStorage.setItem('begs', JSON.stringify(this.begs));
+        console.log(localStorage.getItem('begs'));
+      }
     },
     getBegs() {
-      console.log(localStorage.getItem('begs'));
       if (!this.begs.length) {
         this.begs = JSON.parse(localStorage.getItem('begs'));
       }

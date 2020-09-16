@@ -1,28 +1,46 @@
 <template>
-  <div>
-      <input
-          type="text"
-          class="form-control"
-          placeholder={{placeholder}}
-          :value="value"
-          v-on=""
-      >
-  </div>
+  <li>
+    <button @click="$emit('remove', sponsor.id)">
+      x
+    </button>
+    {{ sponsor.text }}
+    <input
+        type="text"
+        :value="value"
+        v-on="enter"
+    >
+    <button
+        class="btn btn-primary btn-sm"
+        @click="$emit('pay', value)"
+    >
+      v
+    </button>
+  </li>
 </template>
 
 <script>
 export default {
   props: {
-    value: {
-      type: String,
-      default: '',
-    },
-    title: String,
-    placeholder: String,
+    sponsor: {
+      type: Object,
+      required: true
+    }
+  },
+  data () {
+    return {
+      value: '',
+    }
+  },
+  computed: {
+    enter () {
+      return {
+        input: event => this.value = event.target.value
+      }
+    }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>
